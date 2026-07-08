@@ -57,6 +57,18 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         userRepository.delete(user);
     }
+
+    // 로그인
+    @Transactional(readOnly = true)
+    public LoginResponse login(LoginRequest request){
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다."));
+        if(!user.getPassword().equals(request.getPassword())){
+            throw new IllegalStateException("비밀번호가 틀렸습니다.");
+
+        }
+        return new LoginResponse(user);
+    }
 }
 
 

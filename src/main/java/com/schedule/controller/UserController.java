@@ -1,11 +1,12 @@
 package com.schedule.controller;
 
+import jakarta.servlet.http.HttpSession;
 import com.schedule.dto.*;
-import com.schedule.repository.UserRepository;
 import com.schedule.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -53,6 +54,16 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
+    }
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @RequestBody LoginRequest request,
+            HttpSession session) {
+        LoginResponse response = userService.login(request);
+        session.setAttribute("userId", response.getId());
+        session.setAttribute("username", response.getUsername());
+        return ResponseEntity.ok(response);
     }
 
 }
