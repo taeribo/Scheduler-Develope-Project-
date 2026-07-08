@@ -20,7 +20,7 @@ public class UserService {
 
     // 유저 생성
     public CreateUserResponse createUser(CreateUserRequest request) {
-        User user = new User(request.getUsername(), request.getEmail());
+        User user = new User(request.getUsername(), request.getEmail(), request.getPassword());
         User savedUser = userRepository.save(user);
         return new CreateUserResponse(savedUser);
     }
